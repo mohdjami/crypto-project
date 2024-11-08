@@ -21,10 +21,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag mohdjami/koinx-assignment:$(date +%s)
+        run: |
+          IMAGE_TAG=mohdjami/koinx-assignment:$(date +%s)
+          docker build . --file Dockerfile --tag mohdjami/koinx-assignment:latest --tag $IMAGE_TAG
 
       - name: Push Docker image to Docker Hub
         run: |
-          IMAGE_TAG=mohdjami/koinx-assignment:$(date +%s)
-          docker tag mohdjami/koinx-assignment:latest $IMAGE_TAG
+          docker push mohdjami/koinx-assignment:latest
           docker push $IMAGE_TAG

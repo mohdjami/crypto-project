@@ -20,14 +20,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Define Image Name and Tags
+        run: |
+          echo "IMAGE_NAME=mohdjami/koinx-assignment" >> $GITHUB_ENV
+          echo "TIMESTAMP_TAG=${IMAGE_NAME}:$(date +%s)" >> $GITHUB_ENV
+          echo "LATEST_TAG=${IMAGE_NAME}:latest" >> $GITHUB_ENV
+
       - name: Build the Docker image
         run: |
-          IMAGE_NAME=mohdjami/koinx-assignment
-          TIMESTAMP_TAG=${IMAGE_NAME}:$(date +%s)
-          docker build . --file Dockerfile --tag ${IMAGE_NAME}:latest --tag $TIMESTAMP_TAG
-          
+          docker build . --file Dockerfile --tag $LATEST_TAG --tag $TIMESTAMP_TAG
+
       - name: Push Docker image to Docker Hub
         run: |
-          IMAGE_NAME=mohdjami/koinx-assignment
-          docker push ${IMAGE_NAME}:latest
+          docker push $LATEST_TAG
           docker push $TIMESTAMP_TAG

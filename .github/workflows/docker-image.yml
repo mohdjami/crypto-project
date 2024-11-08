@@ -23,14 +23,20 @@ jobs:
       - name: Define Image Name and Tags
         run: |
           echo "IMAGE_NAME=mohdjami/koinx-assignment" >> $GITHUB_ENV
-          echo "TIMESTAMP_TAG=${{ env.IMAGE_NAME }}:$(date +%s)" >> $GITHUB_ENV
-          echo "LATEST_TAG=${{ env.IMAGE_NAME }}:latest" >> $GITHUB_ENV
+          echo "TIMESTAMP_TAG=${IMAGE_NAME}:$(date +%s)" >> $GITHUB_ENV
+          echo "LATEST_TAG=${IMAGE_NAME}:latest" >> $GITHUB_ENV
+
+      # Debugging step to check if environment variables are set
+      - name: Debug - Print Environment Variables
+        run: |
+          echo "LATEST_TAG=${{ env.LATEST_TAG }}"
+          echo "TIMESTAMP_TAG=${{ env.TIMESTAMP_TAG }}"
 
       - name: Build the Docker image
         run: |
-          docker build . --file Dockerfile --tag ${{ env.LATEST_TAG }} --tag ${{ env.TIMESTAMP_TAG }}
+          docker build . --file Dockerfile --tag "${{ env.LATEST_TAG }}" --tag "${{ env.TIMESTAMP_TAG }}"
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push ${{ env.LATEST_TAG }}
-          docker push ${{ env.TIMESTAMP_TAG }}
+          docker push "${{ env.LATEST_TAG }}"
+          docker push "${{ env.TIMESTAMP_TAG }}"

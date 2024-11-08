@@ -22,11 +22,11 @@ jobs:
 
       - name: Define Image Name and Tags
         run: |
-          echo "IMAGE_NAME=mohdjami/koinx-assignment" >> $GITHUB_ENV
+          IMAGE_NAME="mohdjami/koinx-assignment"
+          echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
           echo "TIMESTAMP_TAG=${IMAGE_NAME}:$(date +%s)" >> $GITHUB_ENV
           echo "LATEST_TAG=${IMAGE_NAME}:latest" >> $GITHUB_ENV
 
-      # Debugging step to check if environment variables are set
       - name: Debug - Print Environment Variables
         run: |
           echo "LATEST_TAG=${{ env.LATEST_TAG }}"
